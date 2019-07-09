@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.geoin.iot.modules.DeviceSupplement.dao.DeviceSupplementDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.geoin.iot.modules.DeviceSupplement.entity.DeviceSupplementEntity" id="deviceSupplementMap">
+        <result property="id" column="id"/>
+        <result property="sn" column="sn"/>
+        <result property="satview" column="satview"/>
+        <result property="satused" column="satused"/>
+        <result property="snrmax" column="snrmax"/>
+        <result property="voltage" column="voltage"/>
+        <result property="stealbattry" column="stealbattry"/>
+        <result property="chargeindoor" column="chargeindoor"/>
+        <result property="movingunusual" column="movingunusual"/>
+        <result property="efencing" column="efencing"/>
+        <result property="manufacturer" column="manufacturer"/>
+        <result property="sku" column="sku"/>
+        <result property="chargenum" column="chargenum"/>
+        <result property="ownerphone" column="ownerphone"/>
+    </resultMap>
+    <select id="queryTrack" resultType="map" parameterType="String">
+ select id ,lon,lat,postime,speed FROM tb_device_supplement where sn =#{sn} ORDER BY  postime desc LIMIT 200;</select>
+        <select id="alarmList" resultType="map" parameterType="String">
+            select sn,ownerphone,postime,voltage,stealbattry,movingunusual,location from  tb_device_supplement where chargeindoor=1
+        </select>
+    <select id="currentPosition" resultType="map" parameterType="String">
+select lon,lat,location from tb_device_supplement where sn=#{sn} ORDER BY postime desc  LIMIT 1
+        </select>
+    <select id="alarmMessage" resultType="map" parameterType="String">
+        select *from tb_device_supplement WHERE chargeindoor=1 ORDER BY  postime desc LIMIT 1
+    </select>
+    <select id="positionalTrajectory" resultType="map" parameterType="String">
+       SELECT lon,lat,height,postime,location,speed FROM tb_device_supplement WHERE sn=#{sn} and postime > DATE_SUB((select postime from tb_device_supplement ORDER BY postime desc LIMIT 1), INTERVAL 30 MINUTE) ORDER BY postime DESC
+    </select>
+</mapper>

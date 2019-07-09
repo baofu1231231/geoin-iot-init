@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.geoin.iot.modules.deviceInfo.dao.DeviceInfoDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.geoin.iot.modules.deviceInfo.entity.DeviceInfoEntity" id="deviceInfoMap">
+        <result property="id" column="id"/>
+        <result property="sn" column="sn"/>
+        <result property="type" column="type"/>
+        <result property="imei" column="imei"/>
+        <result property="ownerphone" column="ownerphone"/>
+        <result property="voltage" column="voltage"/>
+        <result property="chargenum" column="chargenum"/>
+        <result property="satview" column="satview"/>
+        <result property="iotcard" column="iotcard"/>
+        <result property="activited" column="activited"/>
+        <result property="actidate" column="actidate"/>
+        <result property="status" column="status"/>
+        <result property="regdate" column="regdate"/>
+        <result property="lat" column="lat"/>
+        <result property="lon" column="lon"/>
+        <result property="height" column="height"/>
+        <result property="postime" column="postime"/>
+        <result property="location" column="location"/>
+    </resultMap>
+    <select id="selectAllSn" resultType="string">
+	    select distinct sn from tb_device_info  where type=2
+    </select>
+    <select id="queryEntityBySn" resultMap="deviceInfoMap" parameterType="String">
+	  select a.sn,a.imei,b.ownerphone,b.voltage,b.chargenum,b.lon,b.lat,b.height,b.postime,b.satview,bsnrmax from tb_device_info a  inner join  tb_device_supplement b on a.sn=b.sn where a.sn=#{sn} ORDER BY postime DESC LIMIT 1
+    </select>
+
+
+</mapper>

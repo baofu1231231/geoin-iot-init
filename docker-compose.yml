@@ -1,0 +1,14 @@
+version: '2'
+services:
+  geoin-iot:
+    image: java:8-jre-alpine
+    ports:
+      - "8081:8081"
+    working_dir: /app/geoin-iot
+    command: ["java", "-jar", "geoin-iot.jar"]
+    restart: always
+    environment:
+      - spring.profiles.active=prod
+    volumes:
+      - ~/work/projects/geoin-iot/target:/app/geoin-iot
+      - /tmp:/tmp
